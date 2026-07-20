@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نادي الرجاء العراقي - دخول اللاعبين</title>
+  <title>نادي الرجاء العراقي - نظام اللاعبين الخصوصي</title>
   <link rel="manifest" href="manifest.json">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -16,141 +16,57 @@
       --text-muted: #94a3b8;
       --border-color: #334155;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
     body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 30px; }
-
-    header {
-      background: linear-gradient(135deg, #020617 0%, #1e293b 100%);
-      border-bottom: 2px solid var(--accent-blue);
-      padding: 20px 15px;
-      text-align: center;
-    }
-
+    header { background: linear-gradient(135deg, #020617 0%, #1e293b 100%); border-bottom: 2px solid var(--accent-blue); padding: 20px 15px; text-align: center; }
     .club-title { font-size: 1.5rem; font-weight: bold; color: #ffffff; }
     .subtitle { font-size: 0.85rem; color: var(--accent-light); margin-top: 4px; }
     .container { max-width: 800px; margin: 0 auto; padding: 15px; }
-
-    /* شاشة تسجيل الدخول */
-    .login-box {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 25px;
-      text-align: center;
-      margin: 40px auto;
-      max-width: 400px;
-    }
-
-    .login-box h3 { margin-bottom: 15px; color: #fff; }
-    .login-box input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background-color: #0f172a;
-      color: #fff;
-      text-align: center;
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-      outline: none;
-    }
-
-    .login-btn {
-      width: 100%;
-      background-color: var(--accent-blue);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
+    .login-box { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; text-align: center; margin: 40px auto; max-width: 400px; }
+    .login-box input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: #0f172a; color: #fff; text-align: center; font-size: 1.2rem; margin-bottom: 15px; }
+    .login-btn { width: 100%; background-color: var(--accent-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     .error-msg { color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none; }
-
-    /* لوحة الإحصائيات (تكون مخفية في البداية) */
     #dashboard { display: none; }
-
-    .player-card {
-      background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-      margin: 20px 0 10px 0;
-      color: var(--accent-light);
-      border-right: 4px solid var(--accent-blue);
-      padding-right: 8px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
+    .player-card { background-color: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 1.1rem; font-weight: bold; margin: 20px 0 10px 0; color: var(--accent-light); border-right: 4px solid var(--accent-blue); padding-right: 8px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
     @media (min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
-
-    .stat-box {
-      background-color: var(--card-bg);
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      text-align: center;
-    }
-
+    .stat-box { background-color: var(--card-bg); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); text-align: center; }
     .stat-box .number { font-size: 1.6rem; font-weight: bold; color: #ffffff; margin-top: 5px; }
     .stat-box .label { font-size: 0.8rem; color: var(--text-muted); }
-
-    .chart-card {
-      background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border-color);
-    }
-
-    .logout-btn {
-      background-color: #dc2626;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
+    .chart-card { background-color: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+    .logout-btn { background-color: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+    .loading-text { color: var(--accent-light); font-size: 0.9rem; margin-bottom: 10px; display: none; }
+    .install-banner { text-align: center; margin: 10px 0; }
+    .install-btn { background-color: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
   </style>
 </head>
 <body>
 
   <header>
     <div class="club-title">نادي الرجاء العراقي</div>
-    <div class="subtitle">منصة متابعة الإحصائيات والتطور البدني</div>
+    <div class="subtitle">منصة تتبع إحصائيات اللاعبين الخصوصية</div>
   </header>
 
   <div class="container">
     
-    <!-- شاشة إدخال رمز الخصوصية -->
-    <div class="login-box" id="loginScreen">
-      <h3>تسجيل دخول اللاعب</h3>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">أدخل رمزك الخاص (PIN) لرؤية بياناتك</p>
-      <input type="password" id="pinInput" placeholder="أدخل الرمز هنا..." maxlength="6">
-      <button class="login-btn" onclick="checkPin()">دخول المنصة</button>
-      <div class="error-msg" id="errorMsg">الرمز غير صحيح! يرجى التأكد من الكادر التدريبي.</div>
+    <div class="install-banner">
+      <button class="install-btn" onclick="alert('لتثبيت التطبيق على الموبايل:\n1. اضغط على خيارات المتصفح (⋮) أو زر المشاركة في الآيفون\n2. اختر (تثبيت التطبيق) أو (الإضافة إلى الشاشة الرئيسية)')">
+        📲 تعليمات تثبيت التطبيق
+      </button>
     </div>
 
-    <!-- لوحة البيانات الخصوصية للاعب -->
+    <!-- شاشة تسجيل الدخول -->
+    <div class="login-box" id="loginScreen">
+      <h3>تسجيل دخول اللاعب</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">أدخل الرمز السري الخاص بك لرؤية بياناتك</p>
+      <div class="loading-text" id="loadingText">جاري جلب البيانات من قاعدة النادي...</div>
+      <input type="password" id="pinInput" placeholder="أدخل الرمز (PIN)...">
+      <button class="login-btn" onclick="checkPin()">دخول المنصة</button>
+      <div class="error-msg" id="errorMsg">الرمز السري غير صحيح! تأكد من الكادر التدريبي.</div>
+    </div>
+
+    <!-- لوحة بيانات اللاعب -->
     <div id="dashboard">
       <div class="player-card">
         <div>
@@ -176,38 +92,52 @@
   </div>
 
   <script>
-    // قاعدة بيانات تجريبية (رمز كل لاعب وحسابه الخاص)
-    // يمكنك تعديل الأكواد والبيانات بسهولة هنا أو ربطها بـ Google Sheets
-    const playersDatabase = {
-      "1010": {
-        name: "أحمد علي",
-        position: "مهاجم",
-        goals: 12,
-        assists: 5,
-        minutes: 780,
-        rating: 8.3,
-        months: ['شهر 1', 'شهر 2', 'شهر 3', 'شهر 4', 'شهر 5'],
-        weight: [74, 73.5, 73, 72.8, 72],
-        stamina: [70, 75, 80, 85, 90]
-      },
-      "2020": {
-        name: "حسين جاسم",
-        position: "وسط ميدان",
-        goals: 6,
-        assists: 11,
-        minutes: 900,
-        rating: 8.7,
-        months: ['شهر 1', 'شهر 2', 'شهر 3', 'شهر 4', 'شهر 5'],
-        weight: [68, 68, 67.5, 67, 67],
-        stamina: [75, 78, 82, 88, 92]
-      }
-    };
+    // تم إدراج معرّف الجدول (Sheet ID) الخاص بك هنا
+    const SHEET_ID = '1ArzBuO6HUpgdkwXb1nec-7NvOfmBlmNFVCVXhTYGMl4'; 
+    const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 
+    let playersDatabase = {};
     let weightChartInstance = null;
     let staminaChartInstance = null;
 
+    // جلب البيانات عند فتح الموقع
+    async function fetchPlayersData() {
+      document.getElementById('loadingText').style.display = 'block';
+      try {
+        const response = await fetch(SHEET_URL);
+        const data = await response.text();
+        parseCSV(data);
+        document.getElementById('loadingText').style.display = 'none';
+      } catch (error) {
+        console.error("خطأ في الاتصال بالجدول:", error);
+        document.getElementById('loadingText').innerText = "فشل جلب البيانات! تأكد من مشاركة الجدول بشكل عام.";
+      }
+    }
+
+    // تحليل CSV القادم من جوجل شيت
+    function parseCSV(text) {
+      const lines = text.split('\n').map(line => line.replace(/"/g, '').split(','));
+      for (let i = 1; i < lines.length; i++) {
+        const row = lines[i];
+        if (row.length < 3) continue;
+        
+        const pin = row[0].trim();
+        playersDatabase[pin] = {
+          name: row[1],
+          position: row[2],
+          goals: row[3] || 0,
+          assists: row[4] || 0,
+          minutes: row[5] || 0,
+          rating: row[6] || 0,
+          months: row[7] ? row[7].split('|') : [],
+          weight: row[8] ? row[8].split('|').map(Number) : [],
+          stamina: row[9] ? row[9].split('|').map(Number) : []
+        };
+      }
+    }
+
     function checkPin() {
-      const pin = document.getElementById('pinInput').value;
+      const pin = document.getElementById('pinInput').value.trim();
       const errorMsg = document.getElementById('errorMsg');
 
       if (playersDatabase[pin]) {
@@ -242,8 +172,7 @@
             backgroundColor: 'rgba(37, 99, 235, 0.1)',
             fill: true, tension: 0.3
           }]
-        },
-        options: { responsive: true, plugins: { legend: { labels: { color: '#fff' } } } }
+        }
       });
 
       staminaChartInstance = new Chart(document.getElementById('staminaChart'), {
@@ -257,8 +186,7 @@
             backgroundColor: 'rgba(96, 165, 250, 0.1)',
             fill: true, tension: 0.3
           }]
-        },
-        options: { responsive: true, plugins: { legend: { labels: { color: '#fff' } } } }
+        }
       });
     }
 
@@ -267,6 +195,16 @@
       document.getElementById('dashboard').style.display = 'none';
       document.getElementById('loginScreen').style.display = 'block';
     }
+
+    // تسجيل Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('Service Worker Active'));
+      });
+    }
+
+    window.onload = fetchPlayersData;
   </script>
 </body>
 </html>
