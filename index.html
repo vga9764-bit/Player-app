@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نادي الرجاء العراقي - متابعة وتطور اللاعبين</title>
+  <link rel="manifest" href="manifest.json">
+  <!-- مكتبة الرسوم البيانية -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --accent-blue: #2563eb;
+      --accent-light-blue: #60a5fa;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding-bottom: 30px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #020617 0%, #1e293b 100%);
+      border-bottom: 2px solid var(--accent-blue);
+      padding: 20px 15px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .club-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .club-badge {
+      width: 12px;
+      height: 12px;
+      background-color: var(--accent-blue);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-blue);
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--accent-light-blue);
+      margin-top: 4px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 15px;
+    }
+
+    .player-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .player-info h2 {
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .player-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .pwa-btn {
+      background-color: var(--accent-blue);
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 20px 0 10px 0;
+      color: var(--accent-light-blue);
+      border-right: 4px solid var(--accent-blue);
+      padding-right: 8px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 600px) {
+      .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-box {
+      background-color: var(--card-bg);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .stat-box .number {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-top: 5px;
+    }
+
+    .stat-box .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .chart-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+    }
+
+    canvas {
+      width: 100% !important;
+      max-height: 250px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="club-title">
+      <span class="club-badge"></span>
+      نادي الرجاء العراقي
+    </div>
+    <div class="subtitle">منصة متابعة الإحصائيات والتطور البدني للاعبين</div>
+  </header>
+
+  <div class="container">
+    
+    <!-- معلومات اللاعب الأساسية -->
+    <div class="player-card">
+      <div class="player-info">
+        <h2 id="playerName">اسم اللاعب: جاري التحميل...</h2>
+        <p id="playerPos">نادي الرجاء العراقي</p>
+      </div>
+      <button class="pwa-btn" id="installBtn">تثبيت التطبيق 📲</button>
+    </div>
+
+    <!-- إحصائيات المباريات -->
+    <div class="section-title">إحصائيات المباريات الموسمية</div>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="label">الأهداف</div>
+        <div class="number" id="statGoals">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">التمريرات الحاسمة</div>
+        <div class="number" id="statAssists">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">دقائق اللعب</div>
+        <div class="number" id="statMinutes">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">معدل التقييم</div>
+        <div class="number" id="statRating">0.0</div>
+      </div>
+    </div>
+
+    <!-- الرسوم البيانية للتطور البدني -->
+    <div class="section-title">التطور البدني للاعب</div>
+    
+    <div class="chart-card">
+      <canvas id="weightChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <canvas id="staminaChart"></canvas>
+    </div>
+
+  </div>
+
+  <script>
+    // تفعيل الـ Service Worker لتشغيل التطبيق أوفلاين
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(() => console.log('تم تسجيل الـ Service Worker بنجاح'));
+      });
+    }
+
+    // منطق زر التثبيت كتطبيق
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            installBtn.style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      }
+    });
+
+    // بيانات تجريبية تظهر مباشرة (يمكنك استبدالها بربط جدول جوجل لاحقاً)
+    const demoData = {
+      name: "أحمد علي",
+      position: "المركز: مهاجم | نادي الرجاء العراقي",
+      goals: 14,
+      assists: 8,
+      minutes: 920,
+      rating: 8.5,
+      dates: ['شهر 1', 'شهر 2', 'شهر 3', 'شهر 4', 'شهر 5', 'شهر 6'],
+      weight: [75, 74.2, 73.8, 73, 72.5, 72], // تغير الوزن
+      stamina: [65, 70, 75, 82, 88, 92]      // تطور قوة التحمل
+    };
+
+    function displayData(data) {
+      document.getElementById('playerName').innerText = "اللاعب: " + data.name;
+      document.getElementById('playerPos').innerText = data.position;
+      document.getElementById('statGoals').innerText = data.goals;
+      document.getElementById('statAssists').innerText = data.assists;
+      document.getElementById('statMinutes').innerText = data.minutes;
+      document.getElementById('statRating').innerText = data.rating;
+
+      // رسم بياني للوزن
+      new Chart(document.getElementById('weightChart'), {
+        type: 'line',
+        data: {
+          labels: data.dates,
+          datasets: [{
+            label: 'مؤشر الوزن (كغم)',
+            data: data.weight,
+            borderColor: '#2563eb',
+            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: '#f8fafc' } } },
+          scales: {
+            x: { ticks: { color: '#94a3b8' } },
+            y: { ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+
+      // رسم بياني لقوة التحمل
+      new Chart(document.getElementById('staminaChart'), {
+        type: 'line',
+        data: {
+          labels: data.dates,
+          datasets: [{
+            label: 'مستوى قوة التحمل واللياقة (من 100)',
+            data: data.stamina,
+            borderColor: '#60a5fa',
+            backgroundColor: 'rgba(96, 165, 250, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: '#f8fafc' } } },
+          scales: {
+            x: { ticks: { color: '#94a3b8' } },
+            y: { ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+    }
+
+    // تشغيل وعرض البيانات فوراً
+    displayData(demoData);
+  </script>
+</body>
+</html>
