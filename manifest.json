@@ -1,14 +1,14 @@
 {
-  "short_name": "الرجاء العراقي",
-  "name": "تطبيق نادي الرجاء العراقي - تتبع اللاعبين",
+  "short_name": "الرجاء",
+  "name": "نادي الرجاء العراقي",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "https://cdn-icons-png.flaticon.com/128/5319/5319641.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "128x128"
     },
     {
-      "src": "icon-512.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/5319/5319641.png",
       "type": "image/png",
       "sizes": "512x512"
     }
